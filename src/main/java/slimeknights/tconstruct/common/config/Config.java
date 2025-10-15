@@ -51,12 +51,14 @@ public final class Config {
   public static int netherOresMiningLevel = 4;
   public static boolean deconstructTools = true;
   public static int deconstructXPRequirement = 0;
+  public static int deconstructLevelRequirement = 0;
   public static int heatItemsTickrateSmeltery = 4;
   public static int heatItemsTickrateSearedFurnace = 4;
   public static int liquidTransferRate = 6;
   public static boolean vanillaToolBreaking = false;
+  public static boolean oldMattockAndKama = false;
   public static boolean fancyJEIBeheadingAnimation = true;
-  
+
   private static String[] craftingStationBlacklistArray = new String[] {
       "de.ellpeck.actuallyadditions.mod.tile.TileEntityItemViewer"
   };
@@ -94,7 +96,20 @@ public final class Config {
           "mod_lavacow:forsaken;true;minecraft:skull:0",
           "mod_lavacow:skeletonking;false;minecraft:skull:0",
           "mod_lavacow:soulworm;false;minecraft:skull:1",
-          "mod_lavacow:scarecrow;false;mod_lavacow:scarecrowhead_common"
+          "mod_lavacow:scarecrow;false;mod_lavacow:scarecrowhead_common",
+          "techguns:armysoldier;false;minecraft:skull:3",
+          "techguns:bandit;false;minecraft:skull:3",
+          "techguns:commando;false;minecraft:skull:3",
+          "techguns:dictatordave;false;minecraft:skull:3",
+          "techguns:psychosteve;false;minecraft:skull:3",
+          "techguns:stormtrooper;false;minecraft:skull:3",
+          "techguns:zombiefarmer;true;minecraft:skull:2",
+          "techguns:zombieminer;true;minecraft:skull:2",
+          "techguns:zombiepoliceman;true;minecraft:skull:2",
+          "techguns:zombiesoldier;true;minecraft:skull:2",
+          "thaumcraft:CultistCleric;false;minecraft:skull:2",
+          "thaumcraft:CultistKnight;false;minecraft:skull:2",
+          "thaumcraft:CultistLeader;false;minecraft:skull:2"
   };
   public static String[] entityMelting = {
           "minecraft:blaze;true;blazing_blood;20",
@@ -158,10 +173,10 @@ public final class Config {
   public static String[] materialPriorities = {
           "tconstruct"
   };
-
   public static String[] entityJEIRendererTransformation = {
           "minecraft:ender_dragon;5.0",  
   };
+  public static String[] fluidIgnore = {};
 
   // Worldgen
   public static boolean genSlimeIslands = true;
@@ -360,6 +375,10 @@ public final class Config {
       prop.setComment("List of materials to ignore, effectively preventing registration.");
       materialIgnore = prop.getStringList();
 
+      prop = configFile.get(cat, "fluidIgnore", fluidIgnore);
+      prop.setComment("List of fluids to ignore, effectively preventing registration of melting and casting recipes.");
+      fluidIgnore = prop.getStringList();
+
       prop = configFile.get(cat, "drainGaseousFluids", drainGaseousFluids);
       prop.setComment("If gaseous fluids are being transferable via faucets.");
       drainGaseousFluids = prop.getBoolean();
@@ -380,6 +399,10 @@ public final class Config {
       prop.setComment("The XP requirement for deconstructing tools (if provided by Tinkers' Tool Leveling).");
       deconstructXPRequirement = prop.getInt();
 
+      prop = configFile.get(cat, "deconstructLevelRequirement", deconstructLevelRequirement);
+      prop.setComment("The level requirement for deconstructing tools (if provided by Tinkers' Tool Leveling).");
+      deconstructLevelRequirement = prop.getInt();
+
       prop = configFile.get(cat, "heatItemsTickrateSmeltery", heatItemsTickrateSmeltery);
       prop.setComment("The tickrate at which items are heated and alloys are created in the smeltery. Defaults to every 4th tick.");
       heatItemsTickrateSmeltery = prop.getInt();
@@ -396,8 +419,12 @@ public final class Config {
       prop.setComment("If true, tools will be fully destroyed like vanilla tools when durability is depleted. You monster!");
       vanillaToolBreaking = prop.getBoolean();
 
+      prop = configFile.get(cat, "oldMattockAndKama", oldMattockAndKama);
+      prop.setComment("Restores old Mattock and Kama behavior (Mattock usable as a hoe, Kama is not)");
+      oldMattockAndKama = prop.getBoolean();
+
       prop = configFile.get(cat, "mobHeadDrops", mobHeadDrops);
-      prop.setComment("List of mob head drops in the format 'modid:entity;subtypes;modid:item:metadata'.");
+      prop.setComment("List of mob head drops in the format 'modid:entity;subtypes;modid:item[:metadata][;max_quantity]'. Example: 'minecraft:skeleton;true;minecraft:skull:0' or 'minecraft:chicken;false;minecraft:feather;2'");
       mobHeadDrops = prop.getStringList();
 
       prop = configFile.get(cat, "entityMelting", entityMelting);

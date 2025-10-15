@@ -2,9 +2,7 @@ package slimeknights.tconstruct.tools.modifiers;
 
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.monster.EntityWitherSkeleton;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -15,7 +13,7 @@ import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import slimeknights.tconstruct.common.config.Config;
+import slimeknights.tconstruct.TConstruct;
 import slimeknights.tconstruct.library.TinkerRegistry;
 import slimeknights.tconstruct.library.Util;
 import slimeknights.tconstruct.library.capability.projectile.CapabilityTinkerProjectile;
@@ -24,6 +22,8 @@ import slimeknights.tconstruct.library.modifiers.ModifierAspect;
 import slimeknights.tconstruct.library.modifiers.ModifierNBT;
 import slimeknights.tconstruct.library.utils.TagUtil;
 import slimeknights.tconstruct.library.utils.TinkerUtil;
+
+import java.util.Collection;
 
 public class ModBeheading extends ToolModifier {
 
@@ -70,14 +70,14 @@ public class ModBeheading extends ToolModifier {
   }
 
   private int getBeheadingLevel(DamageSource source) {
-    if (!(source.getTrueSource() instanceof EntityLivingBase)) {
+    if(!(source.getTrueSource() instanceof EntityLivingBase)) {
       return 0;
     }
     ItemStack item = CapabilityTinkerProjectile.getTinkerProjectile(source)
         .map(ITinkerProjectile::getItemStack)
         .orElse(((EntityLivingBase)source.getTrueSource()).getHeldItem(EnumHand.MAIN_HAND));
 
-    if (item.isEmpty()) {
+    if(item.isEmpty()) {
       return 0;
     }
 
@@ -97,11 +97,19 @@ public class ModBeheading extends ToolModifier {
     // has beheading
     int level = getBeheadingLevel(event.getSource());
     if(shouldDropHead(level)) {
-      ItemStack head = TinkerRegistry.getHeadDrop(event.getEntityLiving());
-      if(!head.isEmpty() && !alreadyContainsDrop(event, head)) {
-        EntityItem entityitem = new EntityItem(event.getEntityLiving().getEntityWorld(), event.getEntityLiving().posX, event.getEntityLiving().posY, event.getEntityLiving().posZ, head);
-        entityitem.setDefaultPickupDelay();
-        event.getDrops().add(entityitem);
+      Collection<ItemStack> heads = TinkerRegistry.getHeadDrop(event.getEntityLiving());
+      if(!heads.isEmpty()) {
+        // Pick one random ItemStack from the collection
+        ItemStack head = heads.toArray(new ItemStack[0])[TConstruct.random.nextInt(heads.size())];
+        if(head.getCount() > 1) {
+          head.setCount(TConstruct.random.nextInt(head.getCount()) + 1);
+        }
+        if(!head.isEmpty() && !alreadyContainsDrop(event, head)) {
+          EntityItem entityitem = new EntityItem(event.getEntityLiving().getEntityWorld(), event.getEntityLiving().posX, event.getEntityLiving().posY, event.getEntityLiving().posZ, head.copy());
+          entityitem.setDefaultPickupDelay();
+          event.getDrops().add(entityitem);
+          TConstruct.log.debug("Dropped random head for {}: {}", event.getEntityLiving().getClass().getSimpleName(), head);
+        }
       }
     }
   }
@@ -114,9 +122,17 @@ public class ModBeheading extends ToolModifier {
       int level = getBeheadingLevel(event.getSource());
 
       if(shouldDropHead(level)) {
-        ItemStack head = TinkerRegistry.getHeadDrop(entity);
-        if(!head.isEmpty()) {
-          ((EntityPlayerMP) entity).dropItem(head, true);
+        Collection<ItemStack> heads = TinkerRegistry.getHeadDrop(entity);
+        if(!heads.isEmpty()) {
+          // Pick one random ItemStack from the collection
+          ItemStack head = heads.toArray(new ItemStack[0])[TConstruct.random.nextInt(heads.size())];
+          if(head.getCount() > 1) {
+            head.setCount(TConstruct.random.nextInt(head.getCount()) + 1);
+          }
+          if(!head.isEmpty()) {
+            ((EntityPlayerMP) entity).dropItem(head.copy(), true);
+            TConstruct.log.debug("Dropped random head for player: {}", head);
+          }
         }
       }
     }

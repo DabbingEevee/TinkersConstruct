@@ -17,6 +17,7 @@ import javax.annotation.Nonnull;
 public class SlotToolStationOut extends Slot {
 
   public ContainerToolStation parent;
+  public boolean isToolForDeconstruction = false;
 
   public SlotToolStationOut(int index, int xPosition, int yPosition, ContainerToolStation container) {
     super(new InventoryCraftResult(), index, xPosition, yPosition);
@@ -33,6 +34,7 @@ public class SlotToolStationOut extends Slot {
             && parent.getBuildableTools().contains(stack.getItem()) // can be built in the current table
             && !isSealedArtifact(stack) // is not a sealed artifact
             && hasEnoughXP(stack) // has enough xp
+            && hasEnoughLevels(stack) // has enough levels
             && parent.getSelectedTool() == null; // on the default screen and not a tool building screen or the tool that is built
   }
 
@@ -41,6 +43,7 @@ public class SlotToolStationOut extends Slot {
     super.putStack(stack);
     // trigger craft matrix update and sync when a tool is placed in the output slot
     if(isItemValid(stack)) {
+      this.isToolForDeconstruction = true;
       parent.onCraftMatrixChanged(parent.getTile());
       parent.detectAndSendChanges();
     } 
@@ -63,9 +66,18 @@ public class SlotToolStationOut extends Slot {
 
   private boolean hasEnoughXP(ItemStack stack) {
     NBTTagCompound modifierTag = TinkerUtil.getModifierTag(stack, "toolleveling");
-    if (modifierTag.hasKey("xp")) {
+    if(modifierTag.hasKey("xp")) {
       int xp = modifierTag.getInteger("xp");
       return xp >= Config.deconstructXPRequirement;
+    }
+    return true;
+  }
+
+  private boolean hasEnoughLevels(ItemStack stack) {
+    NBTTagCompound modifierTag = TinkerUtil.getModifierTag(stack, "toolleveling");
+    if(modifierTag.hasKey("level")) {
+      int level = modifierTag.getInteger("level");
+      return level >= Config.deconstructLevelRequirement;
     }
     return true;
   }

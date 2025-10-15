@@ -33,10 +33,6 @@ repositories {
         name 'DVS1 Maven FS'
         url 'https://dvs1.progwml6.com/files/maven'
     }
-    maven { // TOP
-        name 'tterrag maven'
-        url 'https://maven.tterrag.com'
-    }
     maven { // compatlayer
         name 'K-4u maven'
         url 'https://maven.k-4u.nl'
@@ -56,6 +52,10 @@ repositories {
     maven { // HWYLA
         name = 'Curse Maven'
         url = 'https://cursemaven.com'
+    }
+    maven { // TOP
+        name "ModMaven"
+        url "https://modmaven.dev"
     }
 }
 
@@ -126,9 +126,9 @@ dependencies {
     deobfCompile "slimeknights.mantle:Mantle:${config.minecraft_version_short}-${config.mantle_version}"
 
     // compile against the JEI API
-    deobfCompile "mezz.jei:jei_${config.minecraft_version}:${config.jei_version}:api"
+    deobfCompile "mezz.jei:jei_${config.minecraft_version}:${config.jei_version}"
     // at runtime, use the full JEI jar
-    runtime "mezz.jei:jei_${config.minecraft_version}:${config.jei_version}"
+    // runtime "mezz.jei:jei_${config.minecraft_version}:${config.jei_version}"
 
     deobfCompile "curse.maven:hwyla-253449:${config.hwyla_version}"
     deobfCompile "mcjty.theoneprobe:TheOneProbe-1.12:${config.probe_version}"

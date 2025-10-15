@@ -344,6 +344,7 @@ public class TinkerSmeltery extends TinkerPulse {
     for(FluidStack fs : castCreationFluids) {
       TinkerRegistry.registerTableCasting(new ItemStack(cast), ItemStack.EMPTY, fs.getFluid(), fs.amount);
       TinkerRegistry.registerTableCasting(new CastingRecipe(castGem, RecipeMatch.of("gemEmerald"), fs, true, true));
+      TinkerRegistry.registerTableCasting(new CastingRecipe(castGem, RecipeMatch.of("gemDiamond"), fs, true, true));
       TinkerRegistry.registerTableCasting(new CastingRecipe(castIngot, RecipeMatch.of("ingotBrick"), fs, true, true));
       TinkerRegistry.registerTableCasting(new CastingRecipe(castIngot, RecipeMatch.of("ingotBrickNether"), fs, true, true));
       TinkerRegistry.registerTableCasting(new CastingRecipe(castIngot, new RecipeMatch.Item(TinkerCommons.searedBrick, 1), fs, true, true));
@@ -822,6 +823,9 @@ public class TinkerSmeltery extends TinkerPulse {
    * @param knownOres  Set of pairs of an oredict name to a integer fluid amount
    */
   private static void addKnownOreFluid(Fluid fluid, Set<Pair<String, Integer>> knownOres) {
+    if(Arrays.stream(Config.fluidIgnore).anyMatch(f -> f.equals(fluid.getName()))) {
+      return;
+    }
     for(Pair<String, Integer> pair : knownOres) {
       TinkerRegistry.registerMelting(new MeltingRecipe(RecipeMatch.of(pair.getLeft(), pair.getRight()), fluid));
     }
