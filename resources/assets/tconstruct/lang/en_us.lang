@@ -307,6 +307,8 @@ item.tconstruct.materials.expander_w.name=Expander (Horizontal)
 item.tconstruct.materials.expander_w.tooltip=Don't skip leg day!
 item.tconstruct.materials.expander_h.name=Expander (Vertical)
 item.tconstruct.materials.expander_h.tooltip=Do you even lift?
+item.tconstruct.materials.lava_crystal.name=Lava Crystal
+item.tconstruct.materials.lava_crystal.tooltip=Autosmelt Modifier
 item.tconstruct.materials.reinforcement.name=Reinforcement
 item.tconstruct.materials.reinforcement.tooltip=Reinforced Modifier
 item.tconstruct.materials.silky_cloth.name=Silky Cloth
@@ -788,6 +790,8 @@ modifier.splitting.desc=§oTwo for one!§r\nThe sudden acceleration of releasing
 #   Modifiers   #
 #################
 
+modifier.mod_autosmelt.name=Autosmelt
+modifier.mod_autosmelt.desc=§oA furnace in tool form!§r\nHarvested blocks get smelted.
 modifier.bane_of_arthopods.name=Bane of Arthropods
 modifier.bane_of_arthopods.desc=§oAnti-Spider!§r\nDeal massive damage to spiders.
 modifier.bane_of_arthopods.extra=Vs Spiders: +%s
@@ -1053,10 +1057,12 @@ gui.dryingrack.name=Drying Rack
 gui.jei.smelting.title=Smelting
 gui.jei.alloy.title=Alloying
 gui.jei.casting.title=Casting
+gui.jei.casting.table.title=Table Casting
+gui.jei.casting.basin.title=Basin Casting
 gui.jei.casting.consume=Consumes cast!
 gui.jei.drying.title=Drying
 gui.jei.entitymelting.title=Entity Melting
-gui.jei.severing.title=Severing
+gui.jei.severing.title=Beheading
 gui.jei.smeltery_damage.info=mb / Damage Tick
 gui.jei.material.harvest=Material Harvest Stats
 gui.jei.material.ranged=Material Ranged Stats

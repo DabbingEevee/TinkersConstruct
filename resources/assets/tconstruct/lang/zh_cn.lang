@@ -11,7 +11,7 @@ tile.tconstruct.tooltables.castchest.name=铸模箱
 tile.tconstruct.tooltables.patternchest.tooltip=破坏可以保留其中的模具
 tile.tconstruct.tooltables.partchest.name=部件箱
 tile.tconstruct.tooltables.partchest.tooltip=可以容纳大量的部件
-tile.tconstruct.toolforge.name=工具锻造台
+tile.tconstruct.toolforge.name=工匠砧
 
 tile.tconstruct.soil.grout.name=砖泥
 tile.tconstruct.soil.grout.tooltip=我就是渣渣！
@@ -52,6 +52,7 @@ tile.tconstruct.metal.knightslime.name=骑士史莱姆块
 tile.tconstruct.metal.pigiron.name=生铁块
 tile.tconstruct.metal.alubrass.name=铝黄铜块
 tile.tconstruct.metal.silky_jewel.name=精致珠宝块
+tile.tconstruct.metal.alumite.name=耐酸铝块
 
 tile.tconstruct.firewood.lavawood.name=熔岩木
 tile.tconstruct.firewood.firewood.name=烈焰木
@@ -112,7 +113,6 @@ tile.tconstruct.slime_grass.tooltip=好软啊！能让你跳得更高
 tile.tconstruct.slime_leaves.blue.name=蓝色史莱姆树叶
 tile.tconstruct.slime_leaves.purple.name=紫色史莱姆树叶
 tile.tconstruct.slime_leaves.orange.name=橙色史莱姆树叶
-
 
 tile.tconstruct.slime_grass_tall.tall_grass.name=史莱姆高草
 tile.tconstruct.slime_grass_tall.fern.name=史莱姆蕨
@@ -188,7 +188,6 @@ tile.tconstruct.seared_glass.glass.name=焦黑玻璃
 tile.tconstruct.seared_glass.glass.tooltip=既可用来搭建冶炼厂多结构，同时也是一种美观的建材\n不能存储液体
 tile.tconstruct.seared_ladder.ladder.name=焦黑梯子
 tile.tconstruct.seared_ladder.ladder.tooltip=可供攀爬的冶炼炉建材
-
 
 tile.tconstruct.seared_furnace_controller.name=焦黑熔炉控制器
 tile.tconstruct.tinker_tank_controller.name=工匠储罐控制器
@@ -308,6 +307,8 @@ item.tconstruct.materials.expander_w.name=范围升级器（水平）
 item.tconstruct.materials.expander_w.tooltip=水平方向各拓展一格
 item.tconstruct.materials.expander_h.name=范围升级器（垂直）
 item.tconstruct.materials.expander_h.tooltip=垂直方向各拓展一格
+item.tconstruct.materials.lava_crystal.name=熔岩晶体
+item.tconstruct.materials.lava_crystal.tooltip=自动冶炼强化
 item.tconstruct.materials.reinforcement.name=耐久强化大板
 item.tconstruct.materials.reinforcement.tooltip=耐久强化
 item.tconstruct.materials.silky_cloth.name=绢布
@@ -348,6 +349,7 @@ item.tconstruct.ingots.knightslime.tooltip=既粘弹又像金属，实际上却�
 item.tconstruct.ingots.pigiron.name=生铁锭
 item.tconstruct.ingots.pigiron.tooltip=（猪叫）哼！
 item.tconstruct.ingots.alubrass.name=铝黄铜锭
+item.tconstruct.ingots.alumite.name=耐酸铝锭
 
 item.tconstruct.nuggets.cobalt.name=钴粒
 item.tconstruct.nuggets.ardite.name=阿迪特粒
@@ -355,6 +357,7 @@ item.tconstruct.nuggets.manyullyn.name=玛玉灵粒
 item.tconstruct.nuggets.knightslime.name=骑士史莱姆粒
 item.tconstruct.nuggets.pigiron.name=生铁粒
 item.tconstruct.nuggets.alubrass.name=铝黄铜粒
+item.tconstruct.nuggets.alumite.name=耐酸铝粒
 
 item.tconstruct.pattern.blank=空白模具
 item.tconstruct.pattern.name=%s模具
@@ -426,7 +429,6 @@ item.tconstruct.wide_guard.name=宽护手
 item.tconstruct.cross_guard.name=十字柄
 item.tconstruct.hand_guard.name=护手
 item.tconstruct.full_guard.name=大型护手
-
 
 # Large Tool Parts
 item.tconstruct.hammer_head.name=锤头
@@ -540,6 +542,7 @@ fluid.tconstruct.venom.name=毒液
 fluid.tconstruct.blood.name=血
 fluid.tconstruct.blazing_blood.name=烈焰血
 fluid.tconstruct.milk.name=牛奶
+fluid.tconstruct.greenslime.name=液态绿色史莱姆
 fluid.tconstruct.blueslime.name=液态蓝色史莱姆
 fluid.tconstruct.purpleslime.name=液态紫色史莱姆
 fluid.tconstruct.brass.name=熔融黄铜
@@ -685,7 +688,7 @@ modifier.aquadynamic.desc=§o这儿越来越潮湿了！§r\n水下的挖掘速�
 modifier.aridiculous.name=好暑
 modifier.aridiculous.desc=§o热量再多点！§r\n环境越热，工具越顺手！
 modifier.autosmelt.name=自动冶炼
-modifier.autosmelt.desc=§o工具形式的熔炉！§r\n自动烧炼采掘下来的方块。
+modifier.autosmelt.desc=§o铸具为炉！§r\n自动烧炼采掘下来的方块。
 modifier.baconlicious.name=美味培根
 modifier.baconlicious.desc=§o培！根！§r\n使用工具时将有几率得到培根。
 modifier.cheap.name=廉价
@@ -787,6 +790,8 @@ modifier.splitting.desc=§o一分为二！§r\n箭头突然加速时有概率一
 #   Modifiers   #
 #################
 
+modifier.mod_autosmelt.name=自动冶炼
+modifier.mod_autosmelt.desc=§o铸具为炉！§r\n自动烧制所采集的方块。
 modifier.bane_of_arthopods.name=节肢杀手
 modifier.bane_of_arthopods.desc=§o消灭蜘蛛！§r\n对节肢动物造成大量的伤害。
 modifier.bane_of_arthopods.extra=对蜘蛛：+%s
@@ -988,7 +993,6 @@ gui.craftingstation.name=合成站
 # Stencil Table
 gui.stenciltable.name=模具加工台
 
-
 # PartBuilder
 gui.partbuilder.name=部件加工台
 gui.partcrafter.name=部件合成台
@@ -1012,7 +1016,6 @@ gui.castchest.name=铸模箱
 
 # Part Chest
 gui.partchest.name=部件箱
-
 
 # Smeltery
 gui.smeltery.name=冶炼厂
@@ -1082,6 +1085,3 @@ option.tconstruct.progress=合成进度
 # Config
 config.synced.restart=你的配置已与服务器同步，请重启Minecraft。
 config.synced.ok=配置已与服务器同步。
-
-
-

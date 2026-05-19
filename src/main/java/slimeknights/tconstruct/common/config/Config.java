@@ -18,6 +18,7 @@ import slimeknights.tconstruct.library.utils.RecipeUtil;
 import java.util.Collections;
 import java.util.Set;
 
+// NOTE: Be careful when changing any old config names as they can break certain addons or mods that add integration!
 public final class Config {
 
   public static ForgeCFG pulseConfig = new ForgeCFG("TinkerModules", "Modules");
@@ -35,8 +36,9 @@ public final class Config {
   public static boolean reuseStencil = true;
   public static boolean craftCastableMaterials = false;
   public static boolean chestsKeepInventory = true;
-  public static boolean autosmeltlapis = true;
+  public static boolean autosmeltlapis = false;
   public static boolean obsidianAlloy = true;
+  public static boolean steelAlloy = true;
   public static boolean claycasts = true;
   public static boolean castableBricks = true;
   public static boolean leatherDryingRecipe = true;
@@ -57,7 +59,8 @@ public final class Config {
   public static int liquidTransferRate = 6;
   public static boolean vanillaToolBreaking = false;
   public static boolean oldMattockAndKama = false;
-  public static boolean fancyJEIBeheadingAnimation = true;
+  public static boolean jeiGuidebookButton = false;
+  public static boolean repairToolsOnAnvils = false;
 
   private static String[] craftingStationBlacklistArray = new String[] {
       "de.ellpeck.actuallyadditions.mod.tile.TileEntityItemViewer"
@@ -107,9 +110,11 @@ public final class Config {
           "techguns:zombieminer;true;minecraft:skull:2",
           "techguns:zombiepoliceman;true;minecraft:skull:2",
           "techguns:zombiesoldier;true;minecraft:skull:2",
-          "thaumcraft:CultistCleric;false;minecraft:skull:2",
-          "thaumcraft:CultistKnight;false;minecraft:skull:2",
-          "thaumcraft:CultistLeader;false;minecraft:skull:2"
+          "thaumcraft:CultistCleric;false;minecraft:skull:3",
+          "thaumcraft:CultistKnight;false;minecraft:skull:3",
+          "thaumcraft:CultistLeader;false;minecraft:skull:3",
+          "tropicraft:tropiskeleton;false;minecraft:skull:0",
+          "tropicraft:tropicreeper;false;minecraft:skull:4"
   };
   public static String[] entityMelting = {
           "minecraft:blaze;true;blazing_blood;20",
@@ -168,15 +173,26 @@ public final class Config {
           "natura:babyheatscarspider;false;blazing_blood;20",
           "natura:heatscarspider;false;blazing_blood;40",
           "thaumcraft:Firebat;false;blazing_blood;5",
-          "thaumcraft:Pech;true;gold;10"
+          "thaumcraft:Pech;true;gold;10",
+          "tropicraft:tropiskeleton;true;notmilk;20"
   };
   public static String[] materialPriorities = {
           "tconstruct"
   };
   public static String[] entityJEIRendererTransformation = {
-          "minecraft:ender_dragon;5.0",  
+          "minecraft:ender_dragon;5.0"
   };
   public static String[] fluidIgnore = {};
+  public static String[] incognitoModBlacklist = {
+          "night_vision_armor",
+          "potion_belt_armor",
+          "soul_sight_armor",
+          "travel_belt_armor",
+          "travel_goggles_armor",
+          "travel_sack_armor",
+          "travel_slowfall_armor",
+          "travel_sneak_armor"
+  };
 
   // Worldgen
   public static boolean genSlimeIslands = true;
@@ -199,15 +215,15 @@ public final class Config {
   public static boolean genArdite = true;
   public static int arditeRate = 20; // max. ardite per chunk
   public static boolean genCopper = true;
-  public static int copperRate = 4;
+  public static int copperRate = 8;
   public static int copperHeightMin = 20;
   public static int copperHeightMax = 60;
   public static boolean genTin = true;
-  public static int tinRate = 4;
+  public static int tinRate = 8;
   public static int tinHeightMin = 0;
   public static int tinHeightMax = 40;
   public static boolean genAluminum = true;
-  public static int aluminumRate = 6;
+  public static int aluminumRate = 8;
   public static int aluminumHeightMin = 0;
   public static int aluminumHeightMax = 64;
 
@@ -223,6 +239,7 @@ public final class Config {
   public static boolean testIMC = false; // requires debug module
   public static boolean temperatureCelsius = true;
   public static boolean disableAllParticles = false;
+  public static boolean fancyJEIBeheadingAnimation = true;
   public static int minFluidHeight = 3;
   public static int columnsPartBuilder = 4;
   public static int columnsStencilTable = 4;
@@ -235,10 +252,11 @@ public final class Config {
   static ConfigCategory Modules;
   static ConfigCategory Gameplay;
   static ConfigCategory Worldgen;
+  static ConfigCategory Experimental;
   static ConfigCategory ClientSide;
   
   public static void load(FMLPreInitializationEvent event) {
-    configFile = new Configuration(event.getSuggestedConfigurationFile(), "0.3", false);
+    configFile = new Configuration(event.getSuggestedConfigurationFile(), "0.4", false);
 
     MinecraftForge.EVENT_BUS.register(instance);
 
@@ -317,6 +335,11 @@ public final class Config {
 
       prop = configFile.get(cat, "obsidianAlloy", obsidianAlloy);
       prop.setComment("Allows the creation of obsidian in the smeltery, using a bucket of lava and water.");
+      obsidianAlloy = prop.getBoolean();
+      prop.setRequiresMcRestart(true);
+      
+      prop = configFile.get(cat, "steelAlloy", steelAlloy);
+      prop.setComment("Allows the creation of steel by pouring Blazin' Blood on iron ingots or blocks on a casting table or basin. Note that this will always be disabled if the steel material added by Tinkers' Antique is also disabled.");
       obsidianAlloy = prop.getBoolean();
       prop.setRequiresMcRestart(true);
 
@@ -414,10 +437,6 @@ public final class Config {
       prop = configFile.get(cat, "liquidTransferRate", liquidTransferRate);
       prop.setComment("How much liquid is transferred by faucets and channels per pouring operation.");
       liquidTransferRate = prop.getInt();
-
-      prop = configFile.get(cat, "vanillaToolBreaking", vanillaToolBreaking);
-      prop.setComment("If true, tools will be fully destroyed like vanilla tools when durability is depleted. You monster!");
-      vanillaToolBreaking = prop.getBoolean();
 
       prop = configFile.get(cat, "oldMattockAndKama", oldMattockAndKama);
       prop.setComment("Restores old Mattock and Kama behavior (Mattock usable as a hoe, Kama is not)");
@@ -561,6 +580,23 @@ public final class Config {
       prop.setComment("Maximum Y level for aluminum ore generation.");
       aluminumHeightMax = prop.getInt();
     }
+    // Experimental
+    {
+      String cat = "experimental";
+      Experimental = configFile.getCategory(cat);
+
+      prop = configFile.get(cat, "vanillaToolBreaking", vanillaToolBreaking);
+      prop.setComment("[EXPERIMENTAL] If true, tools will be fully destroyed like vanilla tools when durability is depleted. You monster!");
+      vanillaToolBreaking = prop.getBoolean();
+
+      prop = configFile.get(cat, "jeiGuidebookButton", jeiGuidebookButton);
+      prop.setComment("[EXPERIMENTAL] If true, a button is added to JEI material pages that opens the 'Materials and You' book at the approximate location.");
+      jeiGuidebookButton = prop.getBoolean();
+
+      prop = configFile.get(cat, "repairToolsOnAnvils", repairToolsOnAnvils);
+      prop.setComment("[EXPERIMENTAL] If tools can be repaired or upgraded on anvils like vanilla equipment.");
+      repairToolsOnAnvils = prop.getBoolean();
+    }
     // Clientside
     {
       String cat = "clientside";
@@ -590,7 +626,7 @@ public final class Config {
       prop.setComment("If true, all material variants of the different tools will be listed in creative. Set to false to only have the first found material for all tools (usually wood).");
       listAllToolMaterials = prop.getBoolean();
 
-      prop = configFile.get(cat, "listAllPartMaterials", listAllToolMaterials); // property was split, so defailt to the value of tool materials
+      prop = configFile.get(cat, "listAllPartMaterials", listAllToolMaterials); // property was split, so default to the value of tool materials
       prop.setComment("If true, all material variants of the different parts will be listed in creative. Set to false to only have the first found material for all parts (usually wood).");
       listAllPartMaterials = prop.getBoolean();
 
@@ -639,13 +675,16 @@ public final class Config {
       disableAllParticles = prop.getBoolean();
       
       prop = configFile.get(cat, "fancyJEIBeheadingAnimation", fancyJEIBeheadingAnimation);
-      prop.setComment("If true, JEI tab for severing will use a fancy animation.");
+      prop.setComment("If true, the JEI tab for beheading will use a fancy animation.");
       fancyJEIBeheadingAnimation = prop.getBoolean();
 
       prop = configFile.get(cat, "entityJEIRendererScaleFactor", entityJEIRendererTransformation);
       prop.setComment("List of entity IDs that needs to be scaled when rendered in a GUI in the format 'modid:entity;scale'");
       entityJEIRendererTransformation = prop.getStringList();
 
+      prop = configFile.get(cat, "incognitoModBlacklist", incognitoModBlacklist);
+      prop.setComment("Modifiers that are still displayed despite an Incognito modifier being applied");
+      incognitoModBlacklist = prop.getStringList();
     }
 
     // save changes if any

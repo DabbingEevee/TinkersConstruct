@@ -43,7 +43,7 @@ public class CastingRecipeCategory implements IRecipeCategory<CastingRecipeWrapp
     this.arrow = guiHelper.createAnimatedDrawable(arrowDrawable, 200, IDrawableAnimated.StartDirection.LEFT, false);
 
     this.castingTable = guiHelper.createDrawable(background_loc, 141, 0, 16, 16);
-    this.castingBasin = guiHelper.createDrawable(background_loc, 141, 16, 16, 16);
+    this.castingBasin = null;
   }
 
   @Nonnull
@@ -55,7 +55,7 @@ public class CastingRecipeCategory implements IRecipeCategory<CastingRecipeWrapp
   @Nonnull
   @Override
   public String getTitle() {
-    return Util.translate("gui.jei.casting.title");
+    return Util.translate("gui.jei.casting.table.title");
   }
 
   @Nonnull
